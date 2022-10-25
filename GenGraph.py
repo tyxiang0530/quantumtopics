@@ -62,7 +62,7 @@ for r in r_vals_i:
     txt="Expectation value $<\hat{\overrightarrow{E}}>$ with its uncertainty plotted over time with r = " \
             + str(r) + " and $\\alpha$ = " + str(alpha_i)
     plt.figtext(0.5, -0.03, txt, wrap=True, horizontalalignment='center', fontsize=12)
-    plt.savefig("hw_6_computational_r=" + str(r) + "_alpha=" + str(alpha_i))
+    plt.savefig("hw_6_computational_r=" + str(r) + "_alpha=" + str(alpha_i), bbox='tight')
     plt.show()
 
 # %%
