@@ -12,6 +12,7 @@ r_vals_ii = [0, 1, 2]
 alpha_ii = 5
 theta_ii = [0, math.pi]
 
+delta = 1
 omega_k = 1
 theta_i = 1
 radius = 1
@@ -69,20 +70,17 @@ for r in r_vals_i:
     plt.show()
 
 # %%
-# single
 '''
 alpha = 5, r = 0, 1, 2, theta = 0, pi
 '''
-for theta in theta_ii:
-        for r in r_vals_ii:
+for r in r_vals_ii:
+        for theta in theta_ii:
                 eqn_E_arr = np.zeros(len(t_arr))
                 uncertainty_arr_imag = np.zeros(len(t_arr))
                 uncertainty_arr_real = np.zeros(len(t_arr))
                 for i in range(len(t_arr)):
                         t = t_arr[i]    
-                        eqn_E = 1j * math.sqrt(2*math.pi * hbar * omega_k / vol) * \
-                                (alpha_ii * cmath.exp(1j * (k * radius - omega_k * t)) - \
-                                        np.conj(alpha_ii) * cmath.exp(-1j * (k * radius - omega_k * t)))
+                        eqn_E = -2 * math.sqrt((2*math.pi * hbar * omega_k / vol) * alpha_ii * math.sin(k * r - omega_k * t + delta))
                         eqn_E_arr[i] = eqn_E
                         
                         eqn_delta_E = math.sqrt((2*math.pi * hbar * omega_k / vol) * (math.cosh(2 * r) + math.sinh(2 * r) \
@@ -95,10 +93,10 @@ for theta in theta_ii:
                 plt.ylabel("$<\hat{\overrightarrow{E}}>$")
                 plt.xlabel("Time")
                 txt="Expectation value $<\hat{\overrightarrow{E}}>$ with its uncertainty plotted over time with r = " \
-                        + str(r) + ", $\\theta$ = " + str(theta) + " and $\\alpha$ = " + str(alpha_i)
+                        + str(r) + ", $\\theta$ = " + str(theta) + " and $\\alpha$ = " + str(alpha_ii)
                 plt.figtext(0.5, -0.03, txt, wrap=True, horizontalalignment='center', fontsize=12)
-                plt.ylim(-30, 30)
-                plt.savefig("hw_6_computational_r=" + str(r) + "_alpha=" + str(alpha_i) + "_theta=" 
-                                + str(theta) + ".png", bbox_inches = "tight")
+                plt.ylim(-50, 50)
+                plt.savefig("hw_6_computational_r=" + str(r) + "_alpha=" + str(alpha_ii) + "_theta=" 
+                            + str(theta) + ".png", bbox_inches = "tight")
                 plt.show()
 # %%
