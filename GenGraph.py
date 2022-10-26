@@ -14,13 +14,16 @@ theta_ii = [0, math.pi]
 
 omega_k = 1
 theta_i = 1
+radius = 1
 k = 1
 vol = 1
 t_arr = np.linspace(0, 5 * math.pi, 100)
-print(t_arr)
 hbar = 1
 # %%
 # part i
+'''
+alpha = 0, r = 0, 1, 2
+'''
 fsize = 15
 lsize = 10
 tdir = 'in'
@@ -46,23 +49,56 @@ for r in r_vals_i:
     for i in range(len(t_arr)):
         t = t_arr[i]    
         eqn_E = 1j * math.sqrt(2*math.pi * hbar * omega_k / vol) * \
-                (alpha_i * cmath.exp(1j * (k * r - omega_k * t)) - \
-                        np.conj(alpha_i) * cmath.exp(-1j * (k * r - omega_k * t)))
+                (alpha_i * cmath.exp(1j * (k * radius - omega_k * t)) - \
+                        np.conj(alpha_i) * cmath.exp(-1j * (k * radius - omega_k * t)))
         eqn_E_arr[i] = eqn_E
         
-        eqn_delta_E = (2*math.pi * hbar * omega_k / vol) * (math.cosh(2 * r) + math.sinh(2 * r) \
-                * math.cos(2 * (k * r - omega_k * t + theta_i / 2)))
+        eqn_delta_E = math.sqrt((2*math.pi * hbar * omega_k / vol) * (math.cosh(2 * r) + math.sinh(2 * r) \
+                * math.cos(2 * (k * radius - omega_k * t + theta_i / 2))))
         uncertainty_arr_real[i] = (eqn_delta_E.real / 2)
-        uncertainty_arr_imag[i] = (eqn_delta_E.imag / 2)
         
     plt.plot(t_arr, eqn_E_arr)
-    plt.fill_between(t_arr, eqn_E_arr - uncertainty_arr_real, eqn_E_arr + uncertainty_arr_real)
+    plt.fill_between(t_arr, eqn_E_arr - uncertainty_arr_real, eqn_E_arr + uncertainty_arr_real, alpha = 0.5)
     plt.ylabel("$<\hat{\overrightarrow{E}}>$")
     plt.xlabel("Time")
+    plt.ylim(-30, 30)
     txt="Expectation value $<\hat{\overrightarrow{E}}>$ with its uncertainty plotted over time with r = " \
             + str(r) + " and $\\alpha$ = " + str(alpha_i)
     plt.figtext(0.5, -0.03, txt, wrap=True, horizontalalignment='center', fontsize=12)
-    plt.savefig("hw_6_computational_r=" + str(r) + "_alpha=" + str(alpha_i), bbox='tight')
+    plt.savefig("hw_6_computational_r=" + str(r) + "_alpha=" + str(alpha_i), bbox_inches = "tight")
     plt.show()
 
+# %%
+# single
+'''
+alpha = 5, r = 0, 1, 2, theta = 0, pi
+'''
+for theta in theta_ii:
+        for r in r_vals_ii:
+                eqn_E_arr = np.zeros(len(t_arr))
+                uncertainty_arr_imag = np.zeros(len(t_arr))
+                uncertainty_arr_real = np.zeros(len(t_arr))
+                for i in range(len(t_arr)):
+                        t = t_arr[i]    
+                        eqn_E = 1j * math.sqrt(2*math.pi * hbar * omega_k / vol) * \
+                                (alpha_ii * cmath.exp(1j * (k * radius - omega_k * t)) - \
+                                        np.conj(alpha_ii) * cmath.exp(-1j * (k * radius - omega_k * t)))
+                        eqn_E_arr[i] = eqn_E
+                        
+                        eqn_delta_E = math.sqrt((2*math.pi * hbar * omega_k / vol) * (math.cosh(2 * r) + math.sinh(2 * r) \
+                                * math.cos(2 * (k * radius - omega_k * t + theta_i / 2))))
+                        uncertainty_arr_real[i] = (eqn_delta_E.real / 2)
+                        uncertainty_arr_imag[i] = (eqn_delta_E.imag / 2)
+                        
+                plt.plot(t_arr, eqn_E_arr)
+                plt.fill_between(t_arr, eqn_E_arr - uncertainty_arr_real, eqn_E_arr + uncertainty_arr_real, alpha = 0.5)
+                plt.ylabel("$<\hat{\overrightarrow{E}}>$")
+                plt.xlabel("Time")
+                txt="Expectation value $<\hat{\overrightarrow{E}}>$ with its uncertainty plotted over time with r = " \
+                        + str(r) + ", $\\theta$ = " + str(theta) + " and $\\alpha$ = " + str(alpha_i)
+                plt.figtext(0.5, -0.03, txt, wrap=True, horizontalalignment='center', fontsize=12)
+                plt.ylim(-30, 30)
+                plt.savefig("hw_6_computational_r=" + str(r) + "_alpha=" + str(alpha_i) + "_theta=" 
+                                + str(theta) + ".png", bbox_inches = "tight")
+                plt.show()
 # %%
